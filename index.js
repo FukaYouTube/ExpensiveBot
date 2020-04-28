@@ -22,19 +22,19 @@ app.use(async (ctx, next) => {
     next()
 })
 
-app.use(async (ctx, next) => {
-    let user = await User.findById(ctx.from.id)
-    if(user.is_banned) return null
-    
-    next()
-})
-
 // src
 const source = require('./source')
 
 // default commands
 app.start(ctx => source.$commands.start(ctx, yaml))
 app.help(ctx => source.$commands.help(ctx, yaml))
+
+app.use(async (ctx, next) => {
+    let user = await User.findById(ctx.from.id)
+    if(user.is_banned) return null
+    
+    next()
+})
 
 // use hears commands
 app.use((ctx, next) => source.$hears['use-hears-commands'](ctx, next))
