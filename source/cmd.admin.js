@@ -103,16 +103,19 @@ module.exports = {
         : next()
     },
     "view-user": async (ctx, next) => {
-        let user = await User.findById(ctx['hears-match'][0] !== 'user' ? ctx['hears-match'][0] : ctx['hears-match'][1])
-        let acc = await Account.find({ _owner: user._id })
 
-        if(ctx['hears-command'] === 'user'){
-            return ctx.reply(yaml.getContext('view-user', { user, acc }, keyboard(yaml.getContext('menu')).oneTime().resize().extra()))
-        }else if(ctx['hears-command'] === 'ban' && ctx['hears-match'][0] === 'user'){
-            user.is_banned = true
-            user.save()
+        if(ctx['header-command'] === user || ctx['hears-match']){
+            let user = await User.findById(ctx['hears-match'][0] !== 'user' ? ctx['hears-match'][0] : ctx['hears-match'][1])
+            let acc = await Account.find({ _owner: user._id })
 
-            return ctx.reply(yaml.getContext('banned-user', keyboard(yaml.getContext('menu')).oneTime().resize().extra()))
+            if(ctx['hears-command'] === 'user'){
+                return ctx.reply(yaml.getContext('view-user', { user, acc }, keyboard(yaml.getContext('menu')).oneTime().resize().extra()))
+            }else if(ctx['hears-command'] === 'ban' && ctx['hears-match'][0] === 'user'){
+                user.is_banned = true
+                user.save()
+    
+                return ctx.reply(yaml.getContext('banned-user', keyboard(yaml.getContext('menu')).oneTime().resize().extra()))
+            }
         }else{
             next()
         }
