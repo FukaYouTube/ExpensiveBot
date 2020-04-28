@@ -103,7 +103,7 @@ module.exports = {
         : next()
     },
     "view-user": async (ctx, next) => {
-        if(ctx['header-command'] === 'user' || ctx['hears-match'] === 'ban'){
+        if(ctx['hears-command'] === 'user' || ctx['hears-command'] === 'ban'){
             let user = await User.findById(ctx['hears-match'][0] !== 'user' ? ctx['hears-match'][0] : ctx['hears-match'][1])
             let acc = await Account.find({ _owner: user._id })
 
