@@ -65,7 +65,7 @@ const wizard = new WizardScene('new-course', ctx => {
 
     ctx.reply(message.course.done, keyboard(message.menu).oneTime().resize().extra())
 
-    return ctx.wizard.next()
+    return ctx.scene.leave()
 
 })
 
